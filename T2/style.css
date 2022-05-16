@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+}
+:root
+{
+    --orange: #f14141;
+    --white: #fff;
+    --grey: #f5f5f5;
+    --black1: #222;
+    --black2: #999;
+}
+body
+{
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+.container
+{
+    position: relative;
+    width: 100%;
+}
+.navigation
+{
+    position: fixed;
+    width: 300px;
+    height: 100%;
+    background: var(--orange);
+    border-left: 10px solid var(--orange);
+    transition: 0.5s;
+    overflow: hidden;
+}
+.navigation.active
+{
+    width: 80px;
+}
+.navigation ul
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.navigation ul li
+{
+    position: relative;
+    width: 100%;
+    list-style: none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+.navigation ul li:hover,
+.navigation ul li.hovered
+{
+    background: var(--white);
+}
+.navigation ul li:nth-child(1)
+{
+    margin-bottom: 40px;
+    pointer-events: none;
+}
+.navigation ul li a
+{
+    position: relative;
+    display: block;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a
+{
+    color: var(--orange);
+}
+.navigation ul li a .icon
+{
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 65px;
+    text-align: center;
+}
+.navigation ul li a .icon icon-icon
+{
+    font-size: 1.75em;
+}
+.navigation ul li a .title
+{
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+}
+
+/* curve outside */
+
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before
+{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px 35px 0 10px var(--white);
+    transition: 0.5s;
+    pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after
+{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 0 10px var(--white);
+    transition: 0.5s;
+    pointer-events: none;
+}
+.navigation.dark ul li:hover,
+.navigation.dark ul li.hovered
+{
+    background: rgb(0, 0, 0);
+    transition: 0.5s;
+}
+.navigation.dark ul li:hover a::before,
+.navigation.dark ul li.hovered a::before
+{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px 35px 0 10px #000000;
+    transition: 0.5s;
+    pointer-events: none;
+}
+.navigation.dark ul li:hover a::after,
+.navigation.dark ul li.hovered a::after
+{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: 35px -35px 0 10px #000000;
+    transition: 0.5s;
+    pointer-events: none;
+}
+.toggle1
+{
+    top: 40px;
+    right: 60px;
+    background: #000000;
+    width: 30px;
+    height: 30px;
+    border-radius: 0 25px 25px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.toggle1:before
+{
+    content: '\f186';
+    font-family: fontAwesome;
+    color: #ffffff;
+}
+.main
+{
+    position: absolute;
+    width: calc(100% - 300px);
+    left: 300px;
+    min-height: 110ch;
+    background: var(--white);
+    transition: 0.5s;
+    
+}
+.main.dark
+{
+    background: #000;
+}
+.main.dark .toggle1
+{
+    background: #ffffff;
+}
+.main.dark .toggle1:before
+{
+    content: '\f185';
+    color: #000;
+}
+.main.active
+{
+    width: calc(100% - 80px);
+    left: 80px;
+}
+.topbar
+{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+.toggle
+{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    cursor: pointer;
+}
+.toggle.dark
+{
+    background: rgb(255, 255, 255);
+}
+.toggle.dark .toggle1
+{
+    background: #ffffff;
+}
+.toggle.dark .toggle1:before
+{
+    color: rgb(255, 255, 255);
+}
+.form
+{
+    position: absolute;
+    width: calc(100% - 300px);
+    left: 600px;
+    top: 150px;
+    min-height: 100vh;
+    background: var(--white);
+    transition: 0.5s;
+}
+.form.dark
+{
+    color: orangered;
+    background: #000;
+}
+.form.dark .toggle1
+{
+    background: #ffffff;
+}
+.form.dark .toggle1:before
+{
+    content: '\f185';
+    color: #000;
+}
+.form.active
+{
+    width: calc(100% - 80px);
+    left: 300px;
+}
+
+@media (max-width: 991px)
+{
+    .navigation
+    {
+        left: -300px;
+    }
+    .navigation.active
+    {
+        width: 300px;
+        left: 0;
+    }
+    .main
+    {
+        width: 100%;
+        left: 0;
+    }
+    .main.active
+    {
+        left: 300px;
+    }
+    .form
+    {
+        width: 100%;
+        left: 0;
+    }
+    .form.active
+    {
+        left: 500px;
+    }
+
+}
+@media (max-width: 866px)
+{
+
+    .recentActivity
+    {
+        overflow-x: auto;
+    }
+
+}
+
+@media (max-width: 480px)
+{
+    .navigation
+    {
+        width: 100%;
+        left: -100%;
+        z-index: 1000;
+    }
+    .navigation.active
+    {
+        width: 100%;
+        left: 0;
+    }
+    .toggle
+    {
+        z-index: 1001;
+    }
+    .main.active .toogle
+    {
+        position: fixed;
+        right: 0;
+        left: initial;
+        color: var(--white);
+    }
+
+}
