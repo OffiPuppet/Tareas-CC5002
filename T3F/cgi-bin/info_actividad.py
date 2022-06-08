@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import cgi
@@ -236,6 +236,19 @@ if len(resto_fotos) > 0:
                             <img class="event-image" src="../media/{f[1]}" width="320" height="240">
                         </div>
                     </div>
+                    <div class="volver">
+                    <ul>
+                        <li>
+                            <a class="event-list-btn" id="home-btn" href="./list.py?page=0">Volver a la lista de actividades</a>
+                        </li>
+                    </ul>
+                    <br>
+                    <ul>
+                        <li>
+                            <a class="event-list-btn" id="return-btn" href="./home.py">Volver al inicio</a>
+                        </li>
+                    </ul>
+                </div>
         
         '''
 else:
