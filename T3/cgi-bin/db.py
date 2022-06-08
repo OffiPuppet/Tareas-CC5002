@@ -390,14 +390,6 @@ class DB:
         self.cursor.execute(sql)  # ejecuta la consulta
         return  self.cursor.fetchall() 
 
-    # def get_tema_actividad(self):
-    #     sql=f'''
-    #     SELECT T.nombre, AC.id, COUNT(nombre) FROM tema T, actividad AC
-    #     WHERE T.id = AC.id
-    #     '''
-    #     self.cursor.execute(sql)
-    #     return self.cursor.fetchall()
-
     def get_actividad_list_data(self):
         sql = """
             SELECT AC.id, AC.dia_hora_inicio, AC.dia_hora_termino, C.nombre, AC.sector, AC.tema_id, AC.descripcion, AC.nombre, F1.ruta_archivo, F2.total_fotos
@@ -442,86 +434,6 @@ class DB:
         '''
         self.cursor.execute(sql)
         return self.cursor.fetchall()
-    #################################################
-    ################QUERYS GRAFICOS##################
-    #################################################
-
-    def get_grafico1(self):
-        format_date = lambda d: f"{d.year}-{d.month}-{d.day}"
-        dates = sorted([v[6] for v in self.get_actividad()])
-        
-        data = list(map(format_date, [v for v in dates]))
-        
-        x = []
-        y = []
-
-        for v in data:
-            if v not in x:
-                x.append(v)
-                y.append(1)
-            else:
-                y[x.index(v)] += 1
-
-        return [[u, v] for u,v in zip(x, y)]
-
-    def get_grafico2(self):
-        data = [v[9] for v in self.get_actividad()]
-        
-        x = []
-        y = []
-
-        for v in data:
-            if v not in x:
-                x.append(v)
-                y.append(1)
-            else:
-                y[x.index(v)] += 1
-
-        return [{"label": u + int(f": {v}"), "data": v} for u,v in zip(x, y)]
-
-    def get_grafico3(self):
-        month_list = [
-            ["Jan."],
-            ["Feb."],
-            ["Mar."],
-            ["Apr."],
-            ["May."],
-            ["Jun."],
-            ["Jul."],
-            ["Aug."],
-            ["Sep."],
-            ["Oct."],
-            ["Nov."],
-            ["Dec."]
-        ]
-        
-        
-        frec = [
-            list(np.zeros(12)),
-            list(np.zeros(12)),
-            list(np.zeros(12)) 
-        ]
-
-        data = [v[6] for v in self.get_actividad()]
-
-        for d in data:
-            month_index = d.month - 1
-            time_period = None
-            
-            if d.hour < 11 and d.hour >= 0:
-                time_period = 0
-            elif d.hour >= 11 and d.hour < 15:
-                time_period = 1
-            else:
-                time_period = 2
-            
-            frec[time_period][month_index] += 1
-
-        ret_1 = [[month_list[i], frec[0][i]] for i in range(0, 12)]
-        ret_2 = [[month_list[i], frec[1][i]] for i in range(0, 12)]
-        ret_3 = [[month_list[i], frec[2][i]] for i in range(0, 12)]
-        
-        return ret_1, ret_2, ret_3
 
     def getMapActividad(self):
         self.cursor.execute('SELECT *, COUNT(*) FROM actividad GROUP BY comuna_id')
