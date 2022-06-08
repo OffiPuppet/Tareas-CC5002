@@ -4,10 +4,6 @@
 import sys
 import mysql.connector
 import hashlib
-import datetime
-import numpy as np
-import random
-import os
 sys.stdout.reconfigure(encoding='utf-8')
 
 
