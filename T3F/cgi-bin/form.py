@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -27,7 +27,7 @@ html = '''
 </head>
 
 
-<body>
+<body onload="fillDate()">
   <div class="container">
     <div class="navigation">
         <ul>
@@ -142,7 +142,7 @@ html = '''
             <div class="dia-hora-inicio">
               <br>
               <label for="dia-hora-inicio">Dia Hora Inicio</label>
-              <input type="text" size="20" maxlength="200" class="form-control" name="dia-hora-inicio" id="dia-hora-inicio" onchange="refillDate()">
+              <input type="text" size="20" maxlength="200" class="form-control" name="dia-hora-inicio" id="dia-hora-inicio">
             </div>
             <br>
             <div class="dia-hora-termino">
