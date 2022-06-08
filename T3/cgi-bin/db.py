@@ -22,23 +22,6 @@ class DB:
         self.cursor = self.db.cursor()
 
     # METODOS PARA CONSULTAR DB. 
-    def get_tema_id(self, tema):
-        sql = f'''
-           SELECT id FROM tema WHERE id ={tema};
-            '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()[0][0]
-
-    def get_data_listado(self, inicio):
-        sql = f'''
-            SELECT AC.id, CO.nombre, AC.sector, AC.nombre, AC.email, AC.celular, AC.dia_hora_inicio, AC.dia_hora_termino, AC.descripcion, TE.nombre 
-            FROM actividad AC, comuna CO, tema TE 
-            WHERE AC.comuna_id=CO.id AND AC.tema_id=TE.id 
-            ORDER BY id DESC LIMIT {inicio}, 5;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
     def get_data(self):
         sql = f'''
             SELECT AC.id, CO.nombre, AC.sector, AC.nombre, AC.email, AC.celular, AC.dia_hora_inicio, AC.dia_hora_termino, AC.descripcion, TE.nombre, F.ruta_archivo
@@ -62,33 +45,6 @@ class DB:
         data = self.cursor.fetchall()
         return data
 
-    def get_home_data(self):
-        sql = f'''
-        SELECT AC.id, AC.dia_hora_inicio, AC.dia_hora_termino, C.nombre, AC.sector, AC.tema_id, AC.descripcion, F.ruta_archivo
-        FROM actividad AC, comuna C, (
-            SELECT * FROM foto GROUP BY actividad_id
-        ) F
-        WHERE AC.id = F.actividad_id AND AC.comuna_id = C.id
-        ORDER BY AC.id DESC
-        LIMIT 5;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_fotos(self, id_actividad):
-        sql = f'''
-        SELECT id, ruta_archivo, nombre_archivo, actividad_id FROM foto WHERE actividad_id={id_actividad};
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def contar_fotos(self, id_actividad):
-        sql = f'''
-            SELECT COUNT(id) FROM foto WHERE actividad_id={id_actividad};
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()[0][0]
-
     def get_temas(self, id_tema):
         sql = f'''
             SELECT nombre FROM tema
@@ -96,20 +52,6 @@ class DB:
             '''
         self.cursor.execute(sql)
         return self.cursor.fetchall()[0][0]
-
-    def contar_actividades(self):
-        sql = f'''
-            SELECT COUNT(id) FROM `actividad`;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_contactar_por(self, id_actividad):
-        sql = f'''
-            SELECT id, nombre, identificador, actividad_id FROM contactar_por WHERE actividad_id={id_actividad} ORDER BY nombre ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
 
     def get_month_hour(self):
         sql ='''
@@ -121,13 +63,6 @@ class DB:
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data
-
-    def get_regiones(self):
-        sql = '''
-            SELECT id, nombre FROM `region` ORDER BY id ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
 
     def get_region_name(self, region_id):
         sql = f'''
@@ -177,42 +112,6 @@ class DB:
         self.cursor.execute(sql)
         return self.cursor.fetchall()[0][0]
 
-    def get_tema_id(self, tema):
-        sql = f'''
-           SELECT id FROM tema
-           WHERE id ='{tema}';
-            '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()[0][0]
-
-    def get_comunas(self, region_id):
-        sql = f'''
-            SELECT id, nombre FROM `comuna` WHERE region_id={region_id} ORDER BY id ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_comuna_data1(self, region_id):
-        sql = f'''
-            SELECT id, nombre FROM `comuna` WHERE region_id={region_id} ORDER BY id ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_comuna_data2(self, region_id):
-        sql = f'''
-            SELECT * FROM `comuna` WHERE region_id={region_id} ORDER BY region_id, nombre ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_comuna_data3(self):
-        sql = '''
-            SELECT id FROM `comuna`ORDER BY id ASC;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
     def get_comuna_fotos(self):
         sql ='''
         SELECT comuna.nombre, COUNT(foto.id), comuna.id AS nfotos
@@ -224,13 +123,6 @@ class DB:
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data
-
-    def get_nombre_tema(self,tema_id):  
-        sql = f'''
-            SELECT nombre FROM tema WHERE id={tema_id}
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
 
     def get_mapa_info(self, id):
         sql = f'''
@@ -246,13 +138,6 @@ class DB:
         data = self.cursor.fetchall()
         return data
 
-    def get_actividad(self):
-        sql = '''
-        SELECT * FROM actividad ORDER BY id DESC
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-    
     def get_actividad_por_date(self):
         sql ='''
         SELECT fecha, COUNT(fecha) 
@@ -262,20 +147,6 @@ class DB:
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data
-
-    def all_Dates(self):
-        sql = """SELECT DISTINCT distinct DATE(dia_hora_inicio)
-        FROM actividad
-        ORDER BY dia_hora_inicio ASC"""
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def countDate(self, date):
-        sql = """SELECT COUNT(*)
-        FROM actividad
-        WHERE DATE(dia_hora_inicio)='{}'""".format(date)
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
 
     def get_actividad_por_tema(self):
          sql ='''
@@ -287,13 +158,6 @@ class DB:
          self.cursor.execute(sql)
          data = self.cursor.fetchall()
          return data
-    
-    def guardar_actividad1(self):
-        sql = '''
-                SELECT * FROM actividad
-                '''
-        id_actividad = self.cursor.getlastrowid()
-        return id_actividad
 
     def get_temaID(self, tema):
         sql = f'''
@@ -302,7 +166,39 @@ class DB:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    def get_actividad_photos(self, actividad_id):
+        sql = f'''
+        SELECT * FROM foto WHERE actividad_id = '{actividad_id}'
+        ORDER BY id ASC
+        '''
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def get_last_5(self):
+        sql = f'''
+            SELECT AC.id, CO.nombre, AC.sector, AC.nombre, AC.email, AC.celular, AC.dia_hora_inicio, AC.dia_hora_termino, AC.descripcion, TE.nombre
+            FROM actividad AC, comuna CO, tema TE
+            WHERE AC.comuna_id=CO.id AND AC.tema_id=TE.id
+            ORDER BY id DESC LIMIT 5;
+            '''
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def get_datos_g1(self):
+        sql = '''
+            SELECT id, dia_hora_inicio FROM actividad ORDER BY dia_hora_inicio
+        '''
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
     # METODOS PARA GUARDAR DB.
+    def guardar_actividad1(self):
+        sql = '''
+                SELECT * FROM actividad
+                '''
+        id_actividad = self.cursor.getlastrowid()
+        return id_actividad
+
     def guardar_tema(self, tema):
         sql = f'''
            INSERT INTO tema (nombre) VALUES ('{tema}');
@@ -373,81 +269,3 @@ class DB:
         except:
             print("ERROR AL GUARDAR EN LA BASE DE DATOS")
             sys.exit()
-
-    def get_actividad_photos(self, actividad_id):
-        sql = f'''
-        SELECT * FROM foto WHERE actividad_id = '{actividad_id}'
-        ORDER BY id ASC
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_last_actividad_id(self):
-        sql = '''
-        SELECT max(id) FROM actividad
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()[0][0]
-
-    def get_actividades(self):
-        sql = '''
-        SELECT * FROM actividad ORDER BY id DESC
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-    
-    def get_all_actividades(self):
-        sql = '''
-            SELECT id, comuna_id, sector, nombre, email, celular, dia_hora_inicio, dia_hora_termino, descripcion, tema_id FROM actividad
-            '''
-        self.cursor.execute(sql)  # ejecuta la consulta
-        return  self.cursor.fetchall() 
-
-    def get_actividad_list_data(self):
-        sql = """
-            SELECT AC.id, AC.dia_hora_inicio, AC.dia_hora_termino, C.nombre, AC.sector, AC.tema_id, AC.descripcion, AC.nombre, F1.ruta_archivo, F2.total_fotos
-            FROM actividad AC, comuna C, ( SELECT * FROM foto GROUP BY actividad_id ) F1, (SELECT actividad_id, COUNT(*) AS total_fotos FROM foto GROUP BY actividad_id) F2
-            WHERE AC.id = F1.actividad_id AND AC.id = F2.actividad_id AND AC.comuna_id = C.id AND AC.id > {5*page} AND E.id <= {5*(page+1)}
-            ORDER BY AC.id ASC;
-        """
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def count_actividades(self, id_actividad):
-        sql = f"""
-            SELECT COUNT(id) FROM actividad WHERE actividad_id='{id_actividad}';
-        """
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()[0][0]
-
-    def get_min_comunas(self):
-        sql = '''
-        SELECT * FROM comuna GROUP BY region_id COUNT;
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-    
-    def get_last_5(self):
-        sql = f'''
-            SELECT AC.id, CO.nombre, AC.sector, AC.nombre, AC.email, AC.celular, AC.dia_hora_inicio, AC.dia_hora_termino, AC.descripcion, TE.nombre
-            FROM actividad AC, comuna CO, tema TE
-            WHERE AC.comuna_id=CO.id AND AC.tema_id=TE.id
-            ORDER BY id DESC LIMIT 5;
-            '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def get_datos_g1(self):
-        sql = '''
-            SELECT id, dia_hora_inicio FROM actividad ORDER BY dia_hora_inicio
-        '''
-        self.cursor.execute(sql)
-        return self.cursor.fetchall()
-    
-    def get_comuna(self, comuna_id):
-        self.cursor.execute(f'SELECT nombre FROM comuna WHERE id = {comuna_id}')
-        return self.cursor.fetchall()
-    
-    def get_photo(self, id):
-        self.cursor.execute(f'SELECT ruta_archivo FROM foto WHERE actividad_id = {id}')
-        return self.cursor.fetchall()
