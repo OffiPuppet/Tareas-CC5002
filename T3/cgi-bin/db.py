@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -289,14 +289,27 @@ class DB:
          return data
     
     def guardar_actividad1(self):
-
         sql = '''
                 SELECT * FROM actividad
                 '''
         id_actividad = self.cursor.getlastrowid()
         return id_actividad
 
+    def get_temaID(self, tema):
+        sql = f'''
+           SELECT id FROM tema WHERE nombre='{tema}';
+            '''
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
     # METODOS PARA GUARDAR DB.
+    def guardar_tema(self, tema):
+        sql = f'''
+           INSERT INTO tema (nombre) VALUES ('{tema}');
+            '''
+        self.cursor.execute(sql)
+        self.db.commit()
+
     def guardar_contacto(self, contacto):
         sql = '''
                 INSERT INTO contactar_por (nombre, identificador, actividad_id)
@@ -423,20 +436,12 @@ class DB:
             '''
         self.cursor.execute(sql)
         return self.cursor.fetchall()
-    
-    def getMapa(self):
-        self.cursor.execute('SELECT *, COUNT(*) FROM actividad GROUP BY comuna_id')
-        return self.cursor.fetchall()
 
     def get_datos_g1(self):
         sql = '''
             SELECT id, dia_hora_inicio FROM actividad ORDER BY dia_hora_inicio
         '''
         self.cursor.execute(sql)
-        return self.cursor.fetchall()
-
-    def getMapActividad(self):
-        self.cursor.execute('SELECT *, COUNT(*) FROM actividad GROUP BY comuna_id')
         return self.cursor.fetchall()
     
     def get_comuna(self, comuna_id):
