@@ -1,5 +1,6 @@
 # !/usr/bin/python3
 # -*- coding: utf-8 -*-
+print("Content-type:application/json")
 
 import cgi
 import cgitb
@@ -13,6 +14,8 @@ cgitb.enable()
 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 db = DB('localhost', 'root', '', 'tarea2')
+print('Content-type: text/html; charset=UTF-8')
+print("")
 
 dates = db.get_month_hour()
 months = []
@@ -43,13 +46,13 @@ for pair in dates:
 
 months = [datetime.strftime(datetime.strptime(m, "%Y-%m"),'%B %Y') for m in months]
 bar_mañana = {'x':months, 'y':list(mañana.values()),
- 'name': 'Actividades que inician por la mañana', 'type':'bar'}
+ 'name': 'Actividades que inician por la mañana'}
 
 bar_mediodia = {'x':months, 'y':list(mediodia.values()),
- 'name': 'Actividades que inician al mediodia', 'type':'bar'}
+ 'name': 'Actividades que inician al mediodia'}
 
 bar_tarde = {'x':months, 'y':list(tarde.values()),
- 'name': 'Actividades que inician en la tarde', 'type':'bar'}
+ 'name': 'Actividades que inician en la tarde'}
 
 data = [bar_mañana, bar_mediodia, bar_tarde]
 y = json.dumps(data, ensure_ascii=False).encode('utf8').decode('utf8')

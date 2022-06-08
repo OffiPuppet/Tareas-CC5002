@@ -1,5 +1,9 @@
 # !/usr/bin/python3
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+
+print("Content-type:  application/json")
+print("")
+
 import cgi
 import cgitb
 import json

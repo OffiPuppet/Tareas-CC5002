@@ -256,18 +256,32 @@ class DB:
     def get_actividad_por_date(self):
         sql ='''
         SELECT fecha, COUNT(fecha) 
-        FROM (SELECT CAST(dia_hora_inicio AS date) AS fecha FROM actividad AS F1) F1 
+        FROM (SELECT DAYNAME(CAST(dia_hora_inicio AS date)) AS fecha FROM actividad AS F1) F1 
         GROUP BY fecha;
         '''
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         return data
 
+    def all_Dates(self):
+        sql = """SELECT DISTINCT distinct DATE(dia_hora_inicio)
+        FROM actividad
+        ORDER BY dia_hora_inicio ASC"""
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def countDate(self, date):
+        sql = """SELECT COUNT(*)
+        FROM actividad
+        WHERE DATE(dia_hora_inicio)='{}'""".format(date)
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
     def get_actividad_por_tema(self):
          sql ='''
           SELECT COUNT(T.nombre), T.nombre
           FROM tema T, actividad AC
-          WHERE T.id = 2 and T.id = AC.tema_id
+          WHERE T.id = AC.tema_id
           GROUP BY T.nombre
           '''
          self.cursor.execute(sql)
@@ -422,6 +436,12 @@ class DB:
         self.cursor.execute('SELECT *, COUNT(*) FROM actividad GROUP BY comuna_id')
         return self.cursor.fetchall()
 
+    def get_datos_g1(self):
+        sql = '''
+            SELECT id, dia_hora_inicio FROM actividad ORDER BY dia_hora_inicio
+        '''
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
     #################################################
     ################QUERYS GRAFICOS##################
     #################################################
