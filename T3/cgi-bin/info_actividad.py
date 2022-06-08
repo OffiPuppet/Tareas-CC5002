@@ -31,6 +31,7 @@ html = f'''
     <link rel="stylesheet" href="../CSS/principal.css">
     <title>CSCE</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -217,7 +218,7 @@ html += f'''
                         </div>
                         <br>
                         <div class="info-right">
-                            <img src="../media/{fotos_actividad[0][1]}" width="320" height="240">
+                            <img src="../media/{fotos_actividad[0][1]}" width="320" height="240" onclick='agrandar(src)>
                         </div>
                     </div>
 '''
@@ -233,7 +234,7 @@ if len(resto_fotos) > 0:
                             <p>Fotos extras: {k}<p>
                         </div>
                         <div class="info-right">
-                            <img class="event-image" src="../media/{f[1]}" width="320" height="240">
+                            <img class="event-image" src="../media/{f[1]}" width="320" height="240" onclick='agrandar(src)'>
                         </div>
                     </div>
                     <div class="volver">
