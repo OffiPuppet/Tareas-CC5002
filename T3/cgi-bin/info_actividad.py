@@ -31,6 +31,7 @@ html = f'''
     <link rel="stylesheet" href="../CSS/principal.css">
     <script src="../JS/T1.js"></script>
     <title>CSCE</title>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
     
 </head>
@@ -65,6 +66,11 @@ html = f'''
             </div>
             <div class="main">
                 <div class="toggle1"></div>
+                <div class="topbar">
+                    <div class="toggle">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </div>
+                </div>
                 <div class="bienvenida"></div>
                 <div class="table">
                     <div class="recentActivity">
@@ -280,6 +286,27 @@ else:
             <div id="image-view-overlay"></div>
         </div>
     </body>
+
+<script>
+    //Menu toggle
+    let toggle = document.querySelector('.toggle');
+    let navigation = document.querySelector('.navigation');
+    let main = document.querySelector('.main');
+
+    toggle.onclick = function(){
+        navigation.classList.toggle('active');
+        main.classList.toggle('active');
+    }
+    //Add hovered class
+    let list = document.querySelectorAll('.navigation li');
+    function activeLink(){
+        list.forEach((item) =>
+        item.classList.remove('hovered'));
+        this.classList.add('hovered');
+     }
+     list.forEach((item) =>
+     item.addEventListener('mouseover', activeLink));
+</script>
 
 <script>
     const sec = document.querySelector('.main');
